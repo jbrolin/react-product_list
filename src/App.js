@@ -43,14 +43,31 @@ const textFields = [
     textStyle: "App-intro"
   }
 ];
+
+const isSearched = (searchTerm) => item =>
+  item.title.toLowerCase().includes(searchTerm.toLowerCase());
+
+
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       list: list,
-      textFields: textFields
+      textFields: textFields,
+      searchTerm: "",
+        
     };
     this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+    this.onSearchChange = this.onSearchChange.bind(this);
+
+  }
+
+  onSearchChange(event) {
+   
+   
+    this.setState({ searchTerm: event.target.value });
+
+  
   }
 
   onDismiss = (id) => { // using arrow function we do not need to bind the function
@@ -58,19 +75,23 @@ class App extends Component {
     const isNotId = item => item.objectId !== id;
     const updatedList = this.state.list.filter(isNotId);
     this.setState({ list: updatedList });
-
   }
 
-  onReset() { // using non arrow function we need to bind the function to get access to 'this'.
-    console.log(this.state.list[0]);
+  onReset(event) { // using non arrow function we need to bind the function to get access to 'this'.
+  console.log(event+"###############")
+  //event.target.reset();
+  //this.setState({searchTerm:""});
+  //this.searchField.value="";
+  console.log(this.state.list[0]);
     this.setState({ list: orgList });
-
   }
+
+
 
   render() {
     return (
       <div className="App">
-        {this.state.list.map(item => (
+        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => (
           <div key={item.objectId}>
             <span>
               <a href={item.url} target="_new">
@@ -97,14 +118,21 @@ class App extends Component {
         <AppText
           introText="This is beatiful code to add parts like this!"
         />
-        <span>
+
+        <form name="searchField">
+          Filter:
+          <input type="text" 
+            onChange={this.onSearchChange}
+          />
+        
+
+    
           <button
             onClick={() => this.onReset()}
             type="button">
             Reset list
               </button>
-        </span>
-
+              </form>
       </div>
     );
   }
