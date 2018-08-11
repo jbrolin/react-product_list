@@ -17,7 +17,6 @@ const list = [
     num_comments: 2,
     points: 5,
     objectId: 1
-
   },
   {
     title: "Book2",
@@ -26,7 +25,6 @@ const list = [
     num_comments: 2,
     points: 5,
     objectId: 2
-
   }
 ];
 const orgList = list;
@@ -44,9 +42,8 @@ const textFields = [
   }
 ];
 
-const isSearched = (searchTerm) => item =>
+const isSearched = searchTerm => item =>
   item.title.toLowerCase().includes(searchTerm.toLowerCase());
-
 
 class App extends Component {
   constructor(props) {
@@ -54,39 +51,33 @@ class App extends Component {
     this.state = {
       list: list,
       textFields: textFields,
-      searchTerm: "",
-        
+      searchTerm: ""
     };
     this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
-
   }
 
   onSearchChange(event) {
-   
-   
     this.setState({ searchTerm: event.target.value });
-
-  
   }
 
-  onDismiss = (id) => { // using arrow function we do not need to bind the function
-    console.log(id)
+  onDismiss = id => {
+    // using arrow function we do not need to bind the function
+    console.log(id);
     const isNotId = item => item.objectId !== id;
     const updatedList = this.state.list.filter(isNotId);
     this.setState({ list: updatedList });
-  }
+  };
 
-  onReset(event) { // using non arrow function we need to bind the function to get access to 'this'.
-  console.log(event+"###############")
-  //event.target.reset();
-  //this.setState({searchTerm:""});
-  //this.searchField.value="";
-  console.log(this.state.list[0]);
+  onReset () {
+    // using non arrow function we need to bind the function to get access to 'this'.
+
+    document.getElementById("searchForm").elements["searchEntry"].value = ""; //this empties the entry field. Optimal?
+
+    console.log(this.state.list[0]);
+    this.setState({ searchTerm: "" });
     this.setState({ list: orgList });
-  }
-
-
+  };
 
   render() {
     return (
@@ -104,7 +95,8 @@ class App extends Component {
             <span>
               <button
                 onClick={() => this.onDismiss(item.objectId)}
-                type="button">
+                type="button"
+              >
                 Dismiss
               </button>
             </span>
@@ -112,35 +104,34 @@ class App extends Component {
         ))}
         {this.state.textFields.map(textItem => (
           <div key={textItem.objectId}>
-            <span><p className={textItem.textStyle}>{textItem.text}</p></span>
+            <span>
+              <p className={textItem.textStyle}>{textItem.text}</p>
+            </span>
           </div>
         ))}
-        <AppText
-          introText="This is beatiful code to add parts like this!"
-        />
+        <AppText introText="This is beatiful code to add parts like this!" />
 
-        <form name="searchField">
+        <form id="searchForm">
           Filter:
-          <input type="text" 
+          <input
+            type="text"
+            name="searchEntry"
             onChange={this.onSearchChange}
           />
-        
-
-    
-          <button
-            onClick={() => this.onReset()}
-            type="button">
+          </form>
+          <button onClick={() => this.onReset()} type="button">
             Reset list
-              </button>
-              </form>
+          </button>
+        
       </div>
     );
   }
 }
 
-const AppText = (props) =>
+const AppText = props => (
   <div className="App-header">
     <h1>{props.introText}</h1>
   </div>
+);
 
 export default App;
