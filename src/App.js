@@ -8,7 +8,7 @@ const list = [
     author: "Jordan Walke",
     num_comments: 3,
     points: 4,
-    ObjectId: 0
+    objectId: 0
   },
   {
     title: "Redux",
@@ -16,17 +16,27 @@ const list = [
     author: "Dan Abramov, Andew Clark",
     num_comments: 2,
     points: 5,
-    ObjectId: 1
+    objectId: 1
+
+  },
+  {
+    title: "Book2",
+    url: "https://github.com/reactjs/redux",
+    author: "More, Mickael",
+    num_comments: 2,
+    points: 5,
+    objectId: 3
+
   }
 ];
 const textFields = [
   {
-    ObjectId: 0,
+    objectId: 0,
     text: "Hello you!",
     textStyle: "App-title"
   },
   {
-    ObjectId: 1,
+    objectId: 1,
     text: "Hello you two!",
     textStyle: "App-intro"
   }
@@ -38,12 +48,21 @@ class App extends Component {
       list: list,
       textFields: textFields
     };
+    this.onDismiss = this.onDismiss.bind(this);
   }
+  onDismiss(id){
+    console.log(id)
+    const isNotId = item => item.objectId !== id;
+    const updatedList = this.state.list.filter(isNotId);
+    this.setState({ list: updatedList });
+  
+  }
+
   render() {
     return (
       <div className="App">
         {this.state.list.map(item => (
-          <div key={item.objectID}>
+          <div key={item.objectId}>
             <span>
               <a href={item.url} target="_new">
                 {item.title}
@@ -52,10 +71,17 @@ class App extends Component {
             <span>{item.author}</span>
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
+            <span>
+              <button
+                onClick={() => this.onDismiss(item.objectId)}
+                type="button">
+                Dismiss
+              </button>
+            </span>
           </div>
         ))}
         {this.state.textFields.map(textItem => (
-          <div key={textItem.objectID}>
+          <div key={textItem.objectId}>
             <span><p className={textItem.textStyle}>{textItem.text}</p></span>
           </div>
         ))}
