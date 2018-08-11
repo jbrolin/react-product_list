@@ -59,9 +59,17 @@ class App extends Component {
             <span><p className={textItem.textStyle}>{textItem.text}</p></span>
           </div>
         ))}
+        <AppText
+          introText="This is a beatiful code to add parts like this!"
+        />
       </div>
     );
   }
 }
+
+const AppText = (props) =>
+  <div className="App-header">
+    <h1>{props.introText}</h1>
+  </div>
 
 export default App;
