@@ -25,10 +25,12 @@ const list = [
     author: "More, Mickael",
     num_comments: 2,
     points: 5,
-    objectId: 3
+    objectId: 2
 
   }
 ];
+const orgList = list;
+
 const textFields = [
   {
     objectId: 0,
@@ -48,14 +50,21 @@ class App extends Component {
       list: list,
       textFields: textFields
     };
-    this.onDismiss = this.onDismiss.bind(this);
+    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
   }
-  onDismiss(id){
+
+  onDismiss = (id) => { // using arrow function we do not need to bind the function
     console.log(id)
     const isNotId = item => item.objectId !== id;
     const updatedList = this.state.list.filter(isNotId);
     this.setState({ list: updatedList });
-  
+
+  }
+
+  onReset() { // using non arrow function we need to bind the function to get access to 'this'.
+    console.log(this.state.list[0]);
+    this.setState({ list: orgList });
+
   }
 
   render() {
@@ -86,8 +95,16 @@ class App extends Component {
           </div>
         ))}
         <AppText
-          introText="This is a beatiful code to add parts like this!"
+          introText="This is beatiful code to add parts like this!"
         />
+        <span>
+          <button
+            onClick={() => this.onReset()}
+            type="button">
+            Reset list
+              </button>
+        </span>
+
       </div>
     );
   }
