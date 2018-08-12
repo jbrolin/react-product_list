@@ -53,7 +53,7 @@ class App extends Component {
       textFields: textFields,
       searchTerm: ""
     };
-    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+    //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
   }
 
@@ -69,14 +69,15 @@ class App extends Component {
     this.setState({ list: updatedList });
   };
 
-  onReset () {
+  onReset = () => {
     // using non arrow function we need to bind the function to get access to 'this'.
 
+    
+    console.log(this.state.list[0]);
+    this.setState({ list: orgList });
+    this.setState({ searchTerm: "" });
     document.getElementById("searchForm").elements["searchEntry"].value = ""; //this empties the entry field. Optimal?
 
-    console.log(this.state.list[0]);
-    this.setState({ searchTerm: "" });
-    this.setState({ list: orgList });
   };
 
   render() {
@@ -116,7 +117,9 @@ class App extends Component {
           <input
             type="text"
             name="searchEntry"
+            value={this.searchTerm}
             onChange={this.onSearchChange}
+            
           />
           </form>
           <button onClick={() => this.onReset()} type="button">
