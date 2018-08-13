@@ -53,7 +53,7 @@ class App extends Component {
       textFields: textFields,
       searchTerm: ""
     };
-    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+    //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
   }
 
@@ -114,7 +114,9 @@ class App extends Component {
             value={searchTerm} // using the string as value in the html-form makes it a controlled component, 
             // that is the string is now the "single source of truth" 
             type="text"
+
             onChange={this.onSearchChange}
+            
           />
         </form>
         <button onClick={() => this.onReset()} type="button">
