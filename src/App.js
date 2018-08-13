@@ -69,20 +69,17 @@ class App extends Component {
     this.setState({ list: updatedList });
   };
 
-  onReset () {
+  onReset() {
     // using non arrow function we need to bind the function to get access to 'this'.
-
-    document.getElementById("searchForm").elements["searchEntry"].value = ""; //this empties the entry field. Optimal?
-
-    console.log(this.state.list[0]);
     this.setState({ searchTerm: "" });
     this.setState({ list: orgList });
-  };
+  }
 
   render() {
+    const { searchTerm, list } = this.state; // destructing values from this.state
     return (
       <div className="App">
-        {this.state.list.filter(isSearched(this.state.searchTerm)).map(item => (
+        {list.filter(isSearched(searchTerm)).map(item => (
           <div key={item.objectId}>
             <span>
               <a href={item.url} target="_new">
@@ -111,18 +108,18 @@ class App extends Component {
         ))}
         <AppText introText="This is beatiful code to add parts like this!" />
 
-        <form id="searchForm">
+        <form>
           Filter:
           <input
+            value={searchTerm} // using the string as value in the html-form makes it a controlled component, 
+            // that is the string is now the "single source of truth" 
             type="text"
-            name="searchEntry"
             onChange={this.onSearchChange}
           />
-          </form>
-          <button onClick={() => this.onReset()} type="button">
-            Reset list
-          </button>
-        
+        </form>
+        <button onClick={() => this.onReset()} type="button">
+          Reset list
+        </button>
       </div>
     );
   }
