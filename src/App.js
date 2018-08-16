@@ -53,7 +53,7 @@ class App extends Component {
       textFields: textFields,
       searchTerm: ""
     };
-    //this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
+    this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
   }
 
@@ -63,11 +63,12 @@ class App extends Component {
 
   onDismiss = id => {
     // using arrow function we do not need to bind the function
-    console.log(id);
+
     const isNotId = item => item.objectId !== id;
     const updatedList = this.state.list.filter(isNotId);
     this.setState({ list: updatedList });
   };
+
 
   onReset() {
     // using non arrow function we need to bind the function to get access to 'this'.
@@ -77,9 +78,63 @@ class App extends Component {
 
   render() {
     const { searchTerm, list } = this.state; // destructing values from this.state
+    console.log("get", this.state, list);
     return (
       <div className="App">
-        {list.filter(isSearched(searchTerm)).map(item => (
+     
+        <Table
+          list={list}
+          pattern={searchTerm}
+          onDismiss={this.onDismiss}
+        />
+       <Search
+          value={searchTerm}
+          onChange={this.onSearchChange} 
+        onReset={this.onReset}
+        />
+
+      </div>
+    );
+  }
+}
+
+class Search extends Component {
+
+  render() {
+
+    const { value, onChange, onReset } = this.props; // destructing values from this.props
+
+    return (
+      <div>
+        <form>
+          Filter:
+          <input
+            value={value} // using the string as value in the html-form makes it a controlled component, 
+            // that is the string is now the "single source of truth" 
+            type="text"
+
+            onChange={onChange}
+
+          />
+        </form>
+        <button onClick={() => onReset()} type="button">
+          Reset list
+        </button>
+      </div>
+    );
+  }
+}
+
+
+
+class Table extends Component {
+
+  render() {
+    const { list, pattern, onDismiss } = this.props; // destructing values from this.props
+    console.log(this.props);
+    return (
+      <div>
+        {list.filter(isSearched(pattern)).map(item => (
           <div key={item.objectId}>
             <span>
               <a href={item.url} target="_new">
@@ -91,46 +146,19 @@ class App extends Component {
             <span>{item.points}</span>
             <span>
               <button
-                onClick={() => this.onDismiss(item.objectId)}
-                type="button"
-              >
+                onClick={() => onDismiss(item.objectId)}
+                type="button">
                 Dismiss
               </button>
             </span>
           </div>
         ))}
-        {this.state.textFields.map(textItem => (
-          <div key={textItem.objectId}>
-            <span>
-              <p className={textItem.textStyle}>{textItem.text}</p>
-            </span>
-          </div>
-        ))}
-        <AppText introText="This is beatiful code to add parts like this!" />
-
-        <form>
-          Filter:
-          <input
-            value={searchTerm} // using the string as value in the html-form makes it a controlled component, 
-            // that is the string is now the "single source of truth" 
-            type="text"
-
-            onChange={this.onSearchChange}
-            
-          />
-        </form>
-        <button onClick={() => this.onReset()} type="button">
-          Reset list
-        </button>
+   
       </div>
     );
   }
 }
 
-const AppText = props => (
-  <div className="App-header">
-    <h1>{props.introText}</h1>
-  </div>
-);
+
 
 export default App;
