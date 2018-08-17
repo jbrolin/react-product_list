@@ -27,6 +27,7 @@ const list = [
     objectId: 2
   }
 ];
+
 const orgList = list;
 
 const textFields = [
@@ -79,66 +80,68 @@ class App extends Component {
     const { searchTerm, list } = this.state; // destructing values from this.state
     console.log("get", this.state, list);
     return (
-      <div className="App">
+      <div className="page">
+     
         <Table
           list={list}
           pattern={searchTerm}
           onDismiss={this.onDismiss}
         />
-        <Search
-          value={searchTerm}
-          onChange={this.onSearchChange}
-          onReset={this.onReset}
-        />
-        <Button onClick={() => this.onReset()}>
-          Reset list
+         <div className="interactions">
+          <Search
+            value={searchTerm}
+            onChange={this.onSearchChange}
+            onReset={this.onReset}
+          />
+          <Button onClick={() => this.onReset()}>
+            Reset list
         </Button>
+        </div>
       </div>
     );
   }
 }
 
 const Search = ({ value, onChange, onReset }) =>
-        <form>
-          Filter:
+  <form>
+    Filter:
           <input
-            value={value} // using the string as value in the html-form makes it a controlled component, 
-            // that is the string is now the "single source of truth" 
-            type="text"
-            onChange={onChange}
-          />
-        </form>
+      value={value} // using the string as value in the html-form makes it a controlled component, 
+      // that is the string is now the "single source of truth" 
+      type="text"
+      onChange={onChange}
+    />
+  </form>
 
 const Table = ({ list, pattern, onDismiss }) =>
-      <div>
-        {list.filter(isSearched(pattern)).map(item => (
-          <div key={item.objectId}>
-            <span>
-              <a href={item.url} target="_new">
-                {item.title}
-              </a>
-            </span>
-            <span>{item.author}</span>
-            <span>{item.num_comments}</span>
-            <span>{item.points}</span>
-            <span>
-              <Button onClick={() => onDismiss(item.objectId)}>
-              <b>Do</b> Dismiss
+  <div className="table">
+    {list.filter(isSearched(pattern)).map(item => (
+      <div key={item.objectId} className="table-row">
+        <span>
+          <a href={item.url} target="_new">
+            {item.title}
+          </a>
+        </span>
+        <span>{item.author}</span>
+        <span>{item.num_comments}</span>
+        <span>{item.points}</span>
+        <span>
+          <Button onClick={() => onDismiss(item.objectId)} className="button-inline">
+            <b>Do</b> Dismiss
               </Button>
-            </span>
-          </div>
-        ))}
+        </span>
       </div>
+    ))}
+  </div>
 
-
-const Button = ({ onClick, className = '', children}) => 
-      <button
-        onClick={onClick}
-        className={className}
-        type="button"
-      >
-        {children}
-      </button>
+const Button = ({ onClick, className = '', children }) =>
+  <button
+    onClick={onClick}
+    className={className}
+    type="button"
+  >
+    {children}
+  </button>
 
 
 export default App;
