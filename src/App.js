@@ -90,16 +90,15 @@ class App extends Component {
           onChange={this.onSearchChange}
           onReset={this.onReset}
         />
+        <Button onClick={() => this.onReset()}>
+          Reset list
+        </Button>
       </div>
     );
   }
 }
 
-class Search extends Component {
-  render() {
-    const { value, onChange, onReset } = this.props; // destructing values from this.props
-    return (
-      <div>
+const Search = ({ value, onChange, onReset }) =>
         <form>
           Filter:
           <input
@@ -109,19 +108,8 @@ class Search extends Component {
             onChange={onChange}
           />
         </form>
-        <Button onClick={() => onReset()}>
-          Reset list
-        </Button>
-      </div>
-    );
-  }
-}
 
-class Table extends Component {
-  render() {
-    const { list, pattern, onDismiss } = this.props; // destructing values from this.props
-    console.log(this.props);
-    return (
+const Table = ({ list, pattern, onDismiss }) =>
       <div>
         {list.filter(isSearched(pattern)).map(item => (
           <div key={item.objectId}>
@@ -141,19 +129,9 @@ class Table extends Component {
           </div>
         ))}
       </div>
-    );
-  }
-}
 
-class Button extends Component {
-  render() {
-    const {
-      onClick,
-      className = '',
-      children,
-    } = this.props;
 
-    return (
+const Button = ({ onClick, className = '', children}) => 
       <button
         onClick={onClick}
         className={className}
@@ -161,9 +139,6 @@ class Button extends Component {
       >
         {children}
       </button>
-    );
-  }
-}
 
 
 export default App;
