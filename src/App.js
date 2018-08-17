@@ -63,7 +63,6 @@ class App extends Component {
 
   onDismiss = id => {
     // using arrow function we do not need to bind the function
-
     const isNotId = item => item.objectId !== id;
     const updatedList = this.state.list.filter(isNotId);
     this.setState({ list: updatedList });
@@ -81,29 +80,24 @@ class App extends Component {
     console.log("get", this.state, list);
     return (
       <div className="App">
-     
         <Table
           list={list}
           pattern={searchTerm}
           onDismiss={this.onDismiss}
         />
-       <Search
+        <Search
           value={searchTerm}
-          onChange={this.onSearchChange} 
-        onReset={this.onReset}
+          onChange={this.onSearchChange}
+          onReset={this.onReset}
         />
-
       </div>
     );
   }
 }
 
 class Search extends Component {
-
   render() {
-
     const { value, onChange, onReset } = this.props; // destructing values from this.props
-
     return (
       <div>
         <form>
@@ -112,23 +106,18 @@ class Search extends Component {
             value={value} // using the string as value in the html-form makes it a controlled component, 
             // that is the string is now the "single source of truth" 
             type="text"
-
             onChange={onChange}
-
           />
         </form>
-        <button onClick={() => onReset()} type="button">
+        <Button onClick={() => onReset()}>
           Reset list
-        </button>
+        </Button>
       </div>
     );
   }
 }
 
-
-
 class Table extends Component {
-
   render() {
     const { list, pattern, onDismiss } = this.props; // destructing values from this.props
     console.log(this.props);
@@ -145,20 +134,36 @@ class Table extends Component {
             <span>{item.num_comments}</span>
             <span>{item.points}</span>
             <span>
-              <button
-                onClick={() => onDismiss(item.objectId)}
-                type="button">
-                Dismiss
-              </button>
+              <Button onClick={() => onDismiss(item.objectId)}>
+              <b>Do</b> Dismiss
+              </Button>
             </span>
           </div>
         ))}
-   
       </div>
     );
   }
 }
 
+class Button extends Component {
+  render() {
+    const {
+      onClick,
+      className = '',
+      children,
+    } = this.props;
+
+    return (
+      <button
+        onClick={onClick}
+        className={className}
+        type="button"
+      >
+        {children}
+      </button>
+    );
+  }
+}
 
 
 export default App;
