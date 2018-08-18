@@ -60,3 +60,12 @@ margin: 20px 0;
   border-radius: 0;
   border-bottom: 1px solid #38BB6C;
 }
+.largeColumn {
+  width:40%;
+}
+.midColumn {
+  width:30%;
+}
+.smallColumn {
+  width:10%;
+}
