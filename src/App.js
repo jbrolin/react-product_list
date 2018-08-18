@@ -52,10 +52,10 @@ class App extends Component {
     this.state = {
       list: list,
       textFields: textFields,
-      searchTerm: "", 
- 
+      searchTerm: "",
+
     };
-   
+
     this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
   }
@@ -75,15 +75,23 @@ class App extends Component {
   onReset() {
     // using non arrow function we need to bind the function to get access to 'this'.
     this.setState({ searchTerm: "" });
-    this.setState({ list: orgList });
+
+    // we need to copy the orginal list and resort it by objectId since the order of object are uncertain.
+
+    const newOrgList = orgList.sort(function (a, b) {
+      return a.objectId - b.objectId
+    });
+
+    this.setState({ list: newOrgList });
+
   }
 
   onSortTitle = () => {
-    const updatedList = this.state.list.sort(function(a, b){ 
+    const updatedList = this.state.list.sort(function (a, b) {
       var x = a.title.toLowerCase();
       var y = b.title.toLowerCase();
-      if (x < y) {return -1;}
-      if (x > y) {return 1;}
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
       return 0;
     });
     this.setState({ list: updatedList });
@@ -91,11 +99,11 @@ class App extends Component {
   }
 
   onSortAuthor = () => {
-    const updatedList = this.state.list.sort(function(a, b){ 
+    const updatedList = this.state.list.sort(function (a, b) {
       var x = a.author.toLowerCase();
       var y = b.author.toLowerCase();
-      if (x < y) {return -1;}
-      if (x > y) {return 1;}
+      if (x < y) { return -1; }
+      if (x > y) { return 1; }
       return 0;
     });
     this.setState({ list: updatedList });
@@ -109,13 +117,13 @@ class App extends Component {
     console.log("get", this.state, list);
     return (
       <div className="page">
-     
+
         <Table
           list={list}
           pattern={searchTerm}
           onDismiss={this.onDismiss}
         />
-         <div className="interactions">
+        <div className="interactions">
           <Search
             value={searchTerm}
             onChange={this.onSearchChange}
@@ -125,11 +133,11 @@ class App extends Component {
             Reset list
         </Button>
 
-         <Button onClick={() => this.onSortTitle()}>
+          <Button onClick={() => this.onSortTitle()}>
             Sort list by title
         </Button>
 
-        <Button onClick={() => this.onSortAuthor()}>
+          <Button onClick={() => this.onSortAuthor()}>
             Sort list by author
         </Button>
 
@@ -161,15 +169,15 @@ const Table = ({ list, pattern, onDismiss }) =>
           </a>
         </span>
         <span className="midColumn">
-        {item.author}
+          {item.author}
         </span>
         <span className="smallColumn">
-        {item.num_comments}
+          {item.num_comments}
         </span>
         <span className="smallColumn">
-        {item.points}
+          {item.points}
         </span>
-        <span style={{width:'10%'}}>
+        <span style={{ width: '10%' }}>
           <Button onClick={() => onDismiss(item.objectId)} className="button-inline">
             <b>Do</b> Dismiss
               </Button>
