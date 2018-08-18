@@ -118,18 +118,18 @@ const Table = ({ list, pattern, onDismiss }) =>
   <div className="table">
     {list.filter(isSearched(pattern)).map(item => (
       <div key={item.objectId} className="table-row">
-        <span style={{width:'40%'}}>
+        <span className="largeColumn">
           <a href={item.url} target="_new">
             {item.title}
           </a>
         </span>
-        <span style={{width:'30%'}}>
+        <span className="midColumn">
         {item.author}
         </span>
-        <span  style={{width:'10%'}}>
+        <span className="smallColumn">
         {item.num_comments}
         </span>
-        <span style={{width:'10%'}}>
+        <span className="smallColumn">
         {item.points}
         </span>
         <span style={{width:'10%'}}>
