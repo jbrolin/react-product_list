@@ -3,19 +3,19 @@ import React, { Component } from "react";
 import "./App.css";
 const list = [
   {
-    title: "React",
+    title: "ReactJ",
     url: "https://facebook.github.io/react/",
     author: "Jordan Walke",
     num_comments: 3,
-    points: 4,
+    points: 1,
     objectId: 0
   },
   {
-    title: "Redux",
+    title: "ReduxD",
     url: "https://github.com/reactjs/redux",
     author: "Dan Abramov, Andew Clark",
     num_comments: 2,
-    points: 5,
+    points: 2,
     objectId: 1
   },
   {
@@ -23,7 +23,7 @@ const list = [
     url: "https://github.com/reactjs/redux",
     author: "More, Mickael",
     num_comments: 2,
-    points: 5,
+    points: 3,
     objectId: 2
   }
 ];
@@ -52,8 +52,10 @@ class App extends Component {
     this.state = {
       list: list,
       textFields: textFields,
-      searchTerm: ""
+      searchTerm: "", 
+ 
     };
+   
     this.onReset = this.onReset.bind(this); // we need to bind 'this' if function is not an arrow function
     this.onSearchChange = this.onSearchChange.bind(this);
   }
@@ -76,6 +78,32 @@ class App extends Component {
     this.setState({ list: orgList });
   }
 
+  onSortTitle = () => {
+    const updatedList = this.state.list.sort(function(a, b){ 
+      var x = a.title.toLowerCase();
+      var y = b.title.toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    this.setState({ list: updatedList });
+    console.log(this.state.list);
+  }
+
+  onSortAuthor = () => {
+    const updatedList = this.state.list.sort(function(a, b){ 
+      var x = a.author.toLowerCase();
+      var y = b.author.toLowerCase();
+      if (x < y) {return -1;}
+      if (x > y) {return 1;}
+      return 0;
+    });
+    this.setState({ list: updatedList });
+    console.log(this.state.list);
+  }
+
+
+
   render() {
     const { searchTerm, list } = this.state; // destructing values from this.state
     console.log("get", this.state, list);
@@ -96,6 +124,15 @@ class App extends Component {
           <Button onClick={() => this.onReset()}>
             Reset list
         </Button>
+
+         <Button onClick={() => this.onSortTitle()}>
+            Sort list by title
+        </Button>
+
+        <Button onClick={() => this.onSortAuthor()}>
+            Sort list by author
+        </Button>
+
         </div>
       </div>
     );
